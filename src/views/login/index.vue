@@ -17,15 +17,15 @@
       </div>
 
       <!-- 账号密码输入框 -->
-      <el-form-item prop="username">
+      <el-form-item prop="mobile">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
+          ref="mobile"
+          v-model="loginForm.mobile"
           placeholder="Username"
-          name="username"
+          name="mobile"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -73,33 +73,40 @@
 </template>
 
 <script>
-import { validUsername } from '@/utils/validate'
+import { validMobile } from '@/utils/validate'
 
 export default {
   name: 'Login',
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+    const validateMobile = (rule, value, callback) => {
+      // value 传入的值
+      // callback 回调函数，不传参表示通过，传入error 表示不同过
+      if (!validMobile(value)) {
+        callback(new Error('格式不正确'))
       } else {
         callback()
       }
     }
-    const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
-      } else {
-        callback()
-      }
-    }
+
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        mobile: '13800000002',
+        password: '123456'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
-        password: [{ required: true, trigger: 'blur', validator: validatePassword }]
+        // required 必填项
+        // trigger 触发时机(事件)
+        // validator 自定义校验规则
+        // message 错误提示信息
+        // pattern 自定义正则验证 /^/
+        mobile: [
+          { required: true, trigger: 'blur', message: '请输入手机号' },
+          { required: true, trigger: 'blur', validator: validateMobile }
+        ],
+        password: [
+          { required: true, trigger: 'blur', message: '请输入密码' },
+          { required: true, trigger: 'blur', min: 6, max: 11, message: '请输入6-16位的密码' }
+        ]
       },
       loading: false,
       passwordType: 'password',
@@ -126,6 +133,7 @@ export default {
       })
     },
     handleLogin() {
+      // 兜底校验
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true

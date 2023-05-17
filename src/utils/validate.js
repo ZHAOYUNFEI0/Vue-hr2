@@ -1,5 +1,5 @@
 /**
- * Created by PanJiaChen on 16/11/18.
+ * 本js文件为正则校验规则文件
  */
 
 /**
@@ -11,10 +11,11 @@ export function isExternal(path) {
 }
 
 /**
- * @param {string} str
- * @returns {Boolean}
+ *  手机号正则校验
+ * @param {*} str 传入手机号
+ * @returns 返回校验结果布尔类型
  */
-export function validUsername(str) {
-  const valid_map = ['admin', 'editor']
-  return valid_map.indexOf(str.trim()) >= 0
+export function validMobile(str) {
+  // 返回布尔值，test测试数据
+  return /^1[3-9]\d{9}$/.test(str)
 }
