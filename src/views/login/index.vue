@@ -59,21 +59,26 @@
         type="primary"
         style="width:100%;margin-bottom:30px;"
         class="loginBtn"
-        @click.native.prevent="handleLogin"
-      >Login</el-button>
+        @click.native.prevent="hLogin"
+      >登录</el-button>
 
       <!-- 登录下边文字 -->
       <div class="tips">
         <span style="margin-right:20px;">账号: 13800000002</span>
         <span> 密码: 123456</span>
       </div>
+      <el-button @click="dgin">获取个人信息</el-button>
 
     </el-form>
   </div>
 </template>
 
 <script>
+// 正则校验
 import { validMobile } from '@/utils/validate'
+
+// 登录接口
+import { login, getUserProfile } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -103,6 +108,7 @@ export default {
           { required: true, trigger: 'blur', message: '请输入手机号' },
           { required: true, trigger: 'blur', validator: validateMobile }
         ],
+        // 密码正则校验
         password: [
           { required: true, trigger: 'blur', message: '请输入密码' },
           { required: true, trigger: 'blur', min: 6, max: 11, message: '请输入6-16位的密码' }
@@ -132,22 +138,24 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
+
+    // 登录按钮
+    hLogin() {
       // 兜底校验
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
+          this.dLogin()
         }
       })
+    },
+    async dLogin() {
+      const res = await login(this.loginForm)
+      // 保存Token到vuex
+      this.$store.commit('user/serToken', res.data)
+    },
+    async dgin() {
+      const res = await getUserProfile()
+      console.log(res)
     }
   }
 }

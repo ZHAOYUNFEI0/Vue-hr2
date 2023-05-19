@@ -35,6 +35,12 @@ module.exports = {
     overlay: {
       warnings: false,
       errors: true
+    },
+    // 解决跨域问题
+    proxy: {
+      '/api': {
+        target: 'http://localhost:3000'
+      }
     }
     // before: require('./mock/mock-server.js')
   },

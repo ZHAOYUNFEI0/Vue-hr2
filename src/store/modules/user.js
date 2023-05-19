@@ -1,6 +1,13 @@
 export default {
   namespaced: true,
-  state: {},
-  mutations: {},
+  state: {
+    token: null
+  },
+  mutations: {
+    serToken(state, Token) {
+      // 设置token
+      state.token = Token
+    }
+  },
   actions: {}
 }
