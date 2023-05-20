@@ -1,15 +1,22 @@
 <template>
   <div class="navbar">
+    <!-- 左侧折叠按钮 -->
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
-    <breadcrumb class="breadcrumb-container" />
-
+    <!-- 面包屑： <breadcrumb class="breadcrumb-container" /> -->
+    <!-- 公司名称 -->
+    <div class="app-breadcrumb">
+      河北工程技术学院
+      <span class="breadBtn">体验版</span>
+    </div>
+    <!-- 右侧头像 -->
     <div class="right-menu">
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
+
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/">
             <el-dropdown-item>
@@ -33,12 +40,14 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import Breadcrumb from '@/components/Breadcrumb'
+
+// 面包屑组件
+// import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 
 export default {
   components: {
-    Breadcrumb,
+    // Breadcrumb,
     Hamburger
   },
   computed: {
@@ -54,6 +63,7 @@ export default {
     async logout() {
       await this.$store.dispatch('user/logout')
       this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+      console.log(this.$route.fullPath)
     }
   }
 }
@@ -64,7 +74,8 @@ export default {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  // background: #fff;
+  background: -webkit-linear-gradient(left, #3d6df8, #5b8cff);
   box-shadow: 0 1px 4px rgba(0,21,41,.08);
 
   .hamburger-container {
@@ -80,9 +91,30 @@ export default {
     }
   }
 
-  .breadcrumb-container {
-    float: left;
+  // 公司名称样式
+  .app-breadcrumb{
+    display: inline-block;
+    font-size: 18px;
+    line-height: 50px;
+    margin-left: 10px;
+    color: #fff;
+    cursor: text;
+    .breadBtn{
+      display: inline-block;
+      background: #84a9fe;
+      font-size: 14px;
+      padding: 0 10px;
+      height: 30px;
+      line-height: 30px;
+      margin-left: 15px;
+      border-radius: 10px;
+    }
   }
+
+  // 面包屑样式
+  // .breadcrumb-container {
+  //   float: left;
+  // }
 
   .right-menu {
     float: right;
@@ -135,5 +167,6 @@ export default {
       }
     }
   }
+
 }
 </style>

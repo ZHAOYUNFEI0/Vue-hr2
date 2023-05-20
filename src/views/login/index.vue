@@ -67,7 +67,6 @@
         <span style="margin-right:20px;">账号: 13800000002</span>
         <span> 密码: 123456</span>
       </div>
-      <el-button @click="dgin">获取个人信息</el-button>
 
     </el-form>
   </div>
@@ -78,7 +77,7 @@
 import { validMobile } from '@/utils/validate'
 
 // 登录接口
-import { login, getUserProfile } from '@/api/user'
+import { login } from '@/api/user'
 
 export default {
   name: 'Login',
@@ -149,13 +148,16 @@ export default {
       })
     },
     async dLogin() {
-      const res = await login(this.loginForm)
-      // 保存Token到vuex
-      this.$store.commit('user/serToken', res.data)
-    },
-    async dgin() {
-      const res = await getUserProfile()
-      console.log(res)
+      try {
+        const res = await login(this.loginForm)
+        // 保存Token到vuex
+        this.$store.commit('user/serToken', res.data)
+
+        // 登录成功跳转到首页
+        this.$router.push('/')
+      } catch (err) {
+        console.log(err)
+      }
     }
   }
 }

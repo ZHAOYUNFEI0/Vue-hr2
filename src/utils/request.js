@@ -19,7 +19,6 @@ service.interceptors.request.use(config => {
     // 在请求头中加入token
     config.headers['Authorization'] = `Bearer ` + token
   }
-  console.log(config)
   return config
 }, function(error) {
   return Promise.reject(error)
