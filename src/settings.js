@@ -1,7 +1,8 @@
+// import router from '@/router/.app/_route'
 module.exports = {
 
   // 页面title
-  title: '人力资源管理平台',
+  title: '理平台',
 
   // 顶部导航栏是否固定
   fixedHeader: false,

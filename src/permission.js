@@ -25,7 +25,9 @@ router.beforeEach(async(to, from, next) => {
       next('/')
     } else {
       // 登录成功获取用户信息
-      await store.dispatch('user/getUserInfo')
+      if (!store.state.user.userId) {
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {
