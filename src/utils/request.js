@@ -1,6 +1,8 @@
 import axios from 'axios'
 // 引入vuex
 import store from '@/store'
+// 引入路由
+import router from '@/router'
 
 const service = axios.create({
 
@@ -32,9 +34,16 @@ service.interceptors.response.use(response => {
   } else {
     return Promise.reject(new Error('请求错误'))
   }
-}, function(error) {
+},
+async error => {
+  // console.log(error.response.data.code)
   // 返回执行错误
-  return Promise.reject(error)
+  if (error.response.data.code === 10002) {
+    // token过期，退出登录，情况token，清空个人信息
+    await store.dispatch('user/logout')
+    router.push('/login?return_url=' + router.currentRoute.fullPath)
+  }
+  return Promise.reject('请求出错了', error)
 })
 
 export default service

@@ -76,9 +76,6 @@
 // 正则校验
 import { validMobile } from '@/utils/validate'
 
-// 登录接口
-import { login } from '@/api/user'
-
 export default {
   name: 'Login',
   data() {
@@ -149,12 +146,14 @@ export default {
     },
     async dLogin() {
       try {
-        const res = await login(this.loginForm)
+        // const res = await login(this.loginForm)
         // 保存Token到vuex
-        this.$store.commit('user/serToken', res.data)
+        // this.$store.commit('user/serToken', res.data)
+        await this.$store.dispatch('user/Login', this.loginForm)
 
         // 登录成功跳转到首页
-        this.$router.push('/')
+        this.$router.push(this.$route.query.return_url || '/')
+        // console.log(this.$route)
       } catch (err) {
         console.log(err)
       }

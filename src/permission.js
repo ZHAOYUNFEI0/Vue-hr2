@@ -14,23 +14,27 @@ const whiteList = ['/login', '/404']
  * from：从哪个页面来
  * next：放行
  */
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   // 开启进度条
   NProgress.start()
   const token = store.state.user.token
   if (token) {
     //   如果有token 去的页面是登录页面，跳转到首页
-    if (whiteList.includes(to.path)) {
+    if (to.path === '/login') {
+      NProgress.done()
       next('/')
     } else {
+      // 登录成功获取用户信息
+      await store.dispatch('user/getUserInfo')
       next()
     }
   } else {
     //   如果没有token 去的页面是登录页，同意跳转，如果是其他页面，强制跳转到登录页面
-    if (to.path === whiteList) {
+    if (whiteList.includes(to.path)) {
       next()
     } else {
-      next('/')
+      next('/login')
+      NProgress.done()
     }
   }
 })
