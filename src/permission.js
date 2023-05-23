@@ -43,7 +43,9 @@ router.beforeEach(async(to, from, next) => {
 
 // 路由后置守卫 跳转完成后
 // 跳转成功后关闭 进度条
-router.afterEach(() => {
+router.afterEach((to, from, next) => {
+  // console.log(to)
+  document.title = '人资 -' + to.meta.title
   NProgress.done()
 })
 

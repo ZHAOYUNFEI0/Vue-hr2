@@ -115,3 +115,35 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+// 转换树形结构
+export function tranListToTreeData(list) {
+  const treeList = []; const map = []
+
+  list.forEach(item => {
+    // 给每个元素添加children
+    if (!item.children) {
+      item.children = []
+    }
+    // 保存添加children后的数据
+    map[item.id] = item
+  })
+
+  // 循环
+  list.forEach(item => {
+    // 把父级目录取出来
+    const parent = map[item.pid]
+    // console.log(parent)
+    // 如果是父级目录
+    if (parent) {
+      parent.children.push(item)
+      // console.log(item)
+      // console.log(parent.children)
+    } else {
+      treeList.push(item)
+      // console.log(item)
+    }
+  })
+
+  return treeList
+}

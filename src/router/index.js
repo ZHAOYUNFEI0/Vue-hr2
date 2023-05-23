@@ -20,13 +20,13 @@ import Layout from '@/layout'
 export const asyncRoutes = [
   // 加载组织架构的时候，先加载layout，在加载他的子路由
   departments,
-  employees,
   settings,
+  employees,
+  permissions,
   salarys,
   social_securitys,
   attendances,
-  approvals,
-  permissions
+  approvals
 ]
 
 // 静态路由表
