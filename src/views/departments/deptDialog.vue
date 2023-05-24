@@ -124,9 +124,11 @@ export default {
         this.$message({ type: 'error', message: err })
       }
     },
-
     // 关闭弹窗
     hClose() {
+      // 重置表单数据
+      // 清空校验结果
+      this.$refs.deptForm.resetFields()
       this.$emit('close')
     },
 
@@ -147,6 +149,12 @@ export default {
       } catch (err) {
         this.$message({ type: 'error', message: err })
       }
+    },
+
+    // 清空表单校验
+    resetForm() {
+      this.$refs.deptForm.resetFields()
+      console.log('resetForm')
     }
   }
 

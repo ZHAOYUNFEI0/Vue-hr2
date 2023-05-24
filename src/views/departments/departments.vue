@@ -67,8 +67,9 @@
       :visible.sync="showDialog"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
+      @close="hDialogclose"
     >
-      <AddorEdit :id="curId" :origin-list="originList" :is-edit="isEdit" @success="hSuccess" @close="hClose" />
+      <AddorEdit :id="curId" ref="refDeptDialog" :origin-list="originList" :is-edit="isEdit" @success="hSuccess" @close="hClose" />
     </el-dialog>
   </div>
 </template>
@@ -172,6 +173,11 @@ export default {
       this.showDialog = false
       this.isEdit = false
       console.log(1111)
+    },
+
+    // dialog关闭事件
+    hDialogClose() {
+      this.$refs.refDeptDialog.resetForm()
     }
   }
 }
