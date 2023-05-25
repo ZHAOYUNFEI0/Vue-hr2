@@ -67,7 +67,7 @@
       :visible.sync="showDialog"
       :close-on-click-modal="false"
       :close-on-press-escape="false"
-      @close="hDialogclose"
+      @close="hDialogClose"
     >
       <AddorEdit :id="curId" ref="refDeptDialog" :origin-list="originList" :is-edit="isEdit" @success="hSuccess" @close="hClose" />
     </el-dialog>
