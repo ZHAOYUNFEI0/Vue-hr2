@@ -24,3 +24,29 @@ export function deleteRole(id) {
     method: 'delete'
   })
 }
+
+/**
+ *  公司设置-新增角色
+ * @param {*} data 传入角色信息
+ * @returns
+ */
+export function addRole(data) {
+  return request({
+    url: '/sys/role',
+    method: 'post',
+    data
+  })
+}
+
+/**
+ *  根据id编辑角色
+ * @param {*} data
+ * @returns
+ */
+export function undateRole(data) {
+  return request({
+    url: '/sys/role/' + data.id,
+    method: 'put',
+    data
+  })
+}

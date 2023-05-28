@@ -8,7 +8,7 @@
           <el-tab-pane label="角色管理" name="first">
             <!-- 新增角色按钮 -->
             <el-row style="height: 60px">
-              <el-button icon="el-icon-plus" size="small" type="primary">新增角色</el-button>
+              <el-button icon="el-icon-plus" size="small" type="primary" @click="add">新增角色</el-button>
             </el-row>
             <!-- 下方表格 -->
             <el-table
@@ -39,7 +39,7 @@
                   <el-button
                     size="mini"
                     type="primary"
-                    @click="handleEdit(scope.$index, scope.row)"
+                    @click="hEdit(scope.row)"
                   >编辑</el-button>
                   <el-button
                     size="mini"
@@ -64,13 +64,38 @@
           />
         </div>
       </el-card>
+      <!-- 新增角色弹窗 -->
+      <!-- 新增弹框 -->
+      <el-dialog
+        v-if="showDialog"
+        :title="isEdit ? '编辑':'添加'"
+        :close-on-click-modal="false"
+        :close-on-press-escape="false"
+        :visible.sync="showDialog"
+      >
+        <el-form ref="roleForm" :model="roleForm" :rules="rules" label-width="100px">
+          <el-form-item label="角色名称" prop="name">
+            <el-input v-model="roleForm.name" />
+          </el-form-item>
+          <el-form-item label="角色描述">
+            <el-input v-model="roleForm.description" />
+          </el-form-item>
+        </el-form>
+        <!-- 底部 -->
+        <el-row slot="footer" type="flex" justify="center">
+          <el-col :span="6">
+            <el-button size="small" @click="hClose">取消</el-button>
+            <el-button size="small" type="primary" @click="hSubmit">确定</el-button>
+          </el-col>
+        </el-row>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
 // 获取所有角色api
-import { getRoles, deleteRole } from '@/api/setting'
+import { getRoles, deleteRole, addRole, undateRole } from '@/api/setting'
 
 export default {
   name: 'Setting',
@@ -83,7 +108,16 @@ export default {
         pagesize: 5
       },
       total: 111,
-      currentPage4: 1
+      currentPage4: 1,
+      showDialog: false,
+      roleForm: {
+        name: '',
+        description: ''
+      },
+      rules: {
+        name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }]
+      },
+      isEdit: false
     }
   },
 
@@ -137,6 +171,59 @@ export default {
           message: '已取消删除'
         })
       })
+    },
+
+    hSubmit() {
+      this.$refs.roleForm.validate(valid => {
+        if (valid) {
+          this.isEdit ? this.doEdit() : this.doAdd()
+        }
+      })
+    },
+    // 添加角色
+    async doAdd() {
+      try {
+        const res = await addRole(this.roleForm)
+        console.log(res)
+
+        this.$message.success('添加成功')
+        this.loadRoles()
+        this.showDialog = false
+      } catch (err) {
+        this.$message.error('添加失败')
+        this.showDialog = false
+      }
+    },
+    // 编辑
+    hEdit(row) {
+      console.log(row)
+      this.roleForm = {
+        id: row.id,
+        name: row.name,
+        description: row.description
+
+      }
+      this.showDialog = true
+      this.isEdit = true
+    },
+    async doEdit() {
+      const res = await undateRole(this.roleForm)
+      console.log(res)
+      this.showDialog = false
+      this.loadRoles()
+    },
+    add() {
+      this.showDialog = true
+      this.isEdit = false
+    },
+    hClose() {
+      this.showDialog = false
+      // 重置表单
+      this.roleForm = { // 表单数据项
+        name: '',
+        description: ''
+      }
+      this.$refs.roleForm.resetFields()
     }
 
   }
