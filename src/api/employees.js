@@ -22,3 +22,42 @@ export function addDepartments(data) {
     data
   })
 }
+
+/**
+ * 员工管理-获取员工列表
+ * @param {*} page
+ * @param {*} size
+ * @returns
+ */
+export function getEmployeeList(page, size) {
+  return request({
+    methods: 'get',
+    url: '/sys/user',
+    params: { page, size }
+  })
+}
+
+/**
+ * 员工管理-根据id删除员工
+ * @param {*} id 传入员工id
+ * @returns
+ */
+export function delEmployee(id) {
+  return request({
+    method: 'delete',
+    url: '/sys/user/' + id
+  })
+}
+
+/**
+ * 员工管理-添加员工
+ * @param {*} data 转入员工信息
+ * @returns
+ */
+export function addEmployee(data) {
+  return request({
+    method: 'post',
+    url: '/sys/user',
+    data
+  })
+}
