@@ -7,19 +7,15 @@
           <span>本月：社保在缴 公积金在缴</span>
         </template>
         <template #right>
-          <el-button type="warning" size="small">导入excel</el-button>
-          <el-button type="danger" size="small">导出excel</el-button>
-          <el-button type="primary" size="small" @click="showDialog = true">新增员工</el-button>
+          <el-button type="warning" size="small" @click="$router.push('/employees/import')">导入excel</el-button>
+          <el-button type="danger" size="small" @click="hExport">导出excel</el-button>
+          <el-button type="primary" size="small" @click=" showDialog = true ">新增员工</el-button>
         </template>
       </PageTools>
 
       <!-- 中间信息 -->
       <el-card style="margin-top: 10px;">
-        <el-table
-          :data="list"
-          :default-sort="{prop:'workNumber'}"
-          border
-        >
+        <el-table :data=" list " :default-sort=" { prop: 'workNumber' } " border>
           <el-table-column label="序号" type="index" width="50px" />
 
           <el-table-column label="姓名" prop="username" />
@@ -27,7 +23,7 @@
           <el-table-column label="工号" prop="workNumber" />
 
           <el-table-column label="聘用形式" prop="formOfEmployment">
-            <template v-slot="scope">
+            <template v-slot=" scope ">
               {{ formatEmployment(scope.row.formOfEmployment) }}
             </template>
           </el-table-column>
@@ -40,24 +36,24 @@
             <template slot-scope="scope">
               <el-button type="text">查看</el-button>
               <el-button type="text">分配角色</el-button>
-              <el-button type="text" @click="Hdel(scope.row.id)">删除</el-button>
+              <el-button type="text" @click=" Hdel(scope.row.id) ">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
         <el-pagination
           style="margin-top: 20px; text-align: center;"
-          :page-sizes="[5, 10, 15,20]"
-          :page-size="100"
+          :page-sizes=" [5, 10, 15, 20] "
+          :page-size=" 100 "
           layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-          :current-page="currentPage4"
-          @size-change="Hsize"
-          @current-change="Hpage"
+          :total=" total "
+          :current-page=" currentPage4 "
+          @size-change=" Hsize "
+          @current-change=" Hpage "
         />
       </el-card>
       <!-- 添加弹窗 -->
-      <el-dialog title="添加员工" :visible.sync="showDialog">
-        <addorEdit v-if="showDialog" @success="hSuccess" @close="close" />
+      <el-dialog title="添加员工" :visible.sync=" showDialog ">
+        <addorEdit v-if=" showDialog " @success=" hSuccess " @close=" close " />
       </el-dialog>
     </div>
   </div>
@@ -129,7 +125,7 @@ export default {
         }
         this.loadEmployeeList()
         this.$message.success(res.message)
-      }).catch(() => {})
+      }).catch(() => { })
     },
 
     // 关闭弹窗
@@ -141,11 +137,77 @@ export default {
       this.total++
       this.page = Math.ceil(this.total / this.size)
       this.loadEmployeeList()
+    },
+    // 导出功能
+    hExport() {
+      import('@/vendor/Export2Excel').then(async excel => {
+        // 发ajax请求，获取数据
+        const res = await getEmployeeList(this.page, this.size)
+        const list = res.data.rows
+        console.log('从后端获取的数据', list)
+
+        const { header, data } = this.formatData(list)
+        // excel表示导入的模块对象
+        console.log(header, data)
+        excel.export_json_to_excel({
+          // header: ['姓名', '工资'], // 表头 必填
+          header: header, // 表头 必填
+          data: data,
+          // data: [
+          //   ['刘备11111111111111', 100],
+          //   ['关羽', 500]
+          // ], // 具体数据 必填
+          filename: 'excel-list', // 文件名称
+          autoWidth: true, // 宽度是否自适应
+          bookType: 'xlsx' // 生成的文件类型
+        })
+      })
+    },
+    formatData(list) {
+      const map = {
+        'id': '编号',
+        'password': '密码',
+        'mobile': '手机号',
+        'username': '姓名',
+        'timeOfEntry': '入职日期',
+        'formOfEmployment': '聘用形式',
+        'correctionTime': '转正日期',
+        'workNumber': '工号',
+        'departmentName': '部门',
+        'staffPhoto': '头像地址'
+      }
+      console.log(list)
+      let header = []
+      // header = ['id', 'mobile', 'username', .....]
+      // data = [
+      //     ['65c2', '1380000002', '管理员', ....],
+      //     ['65c3', '1380000003', '孙财', ....],
+      // ]
+      let data = []
+      // 开始代码
+      // 找到一个元素
+      const one = list[0]
+      if (!one) {
+        return { header, data }
+      }
+      header = Object.keys(one).map(key => {
+        return map[key]
+      })
+      const hireTypEnmu = { '1': '正式', '2': '非正式' }
+
+      // data把list中每一个对象转成 对应的value数组
+      data = list.map(obj => {
+        // 把  Obj['formOfEmployment']: 1 , 2   ---> '正式'， '非正式'
+        const key = obj['formOfEmployment'] // 1, 2
+        obj['formOfEmployment'] = hireTypEnmu[key] // hireTypEnmu:{1:'正式', '2':'非正式' }
+
+        return Object.values(obj)
+      })
+
+      return { header, data }
     }
   }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

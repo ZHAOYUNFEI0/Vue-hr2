@@ -61,3 +61,16 @@ export function addEmployee(data) {
     data
   })
 }
+
+/**
+ * 员工管理-导入Excel
+ * @param {*} data
+ * @returns
+ */
+export function importEmployee(data) {
+  return request({
+    method: 'post',
+    url: '/sys/user/batch',
+    data
+  })
+}

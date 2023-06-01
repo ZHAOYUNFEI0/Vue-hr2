@@ -34,13 +34,13 @@ export const constantRoutes = [
   {
     path: '/login',
     component: () => import('@/views/login/index'),
-    hidden: true
+    hidden: true // 不显示左侧菜单
   },
 
   {
     path: '/404',
     component: () => import('@/views/404'),
-    hidden: true
+    hidden: true // 不显示左侧菜单
   },
 
   {
@@ -52,6 +52,17 @@ export const constantRoutes = [
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
       meta: { title: '首页', icon: 'dashboard' }
+    }]
+  },
+  {
+    path: '/employees/import',
+    component: Layout,
+    hidden: true, // 不显示左侧菜单
+    children: [{
+      name: 'Import',
+      path: '',
+      component: () => import('@/views/import'),
+      mata: { title: 'Excel 导入', icon: 'people' }
     }]
   },
 
