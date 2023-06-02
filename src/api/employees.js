@@ -74,3 +74,16 @@ export function importEmployee(data) {
     data
   })
 }
+
+/**
+ * 员工管理-根据id 修改员工姓名密码
+ * @param {*} data 传入id
+ * @returns
+ */
+export function saveUserDetailById(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'PUT', // 全量修改
+    data
+  })
+}

@@ -34,7 +34,7 @@
 
           <el-table-column label="操作" width="250">
             <template slot-scope="scope">
-              <el-button type="text">查看</el-button>
+              <el-button type="text" @click="$router.push(`/employees/detail?id=${scope.row.id}`)">查看</el-button>
               <el-button type="text">分配角色</el-button>
               <el-button type="text" @click=" Hdel(scope.row.id) ">删除</el-button>
             </template>

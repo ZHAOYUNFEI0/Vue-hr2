@@ -1787,6 +1787,11 @@
     "@webassemblyjs/wast-parser" "1.9.0"
     "@xtuc/long" "4.2.2"
 
+"@xmldom/xmldom@^0.8.6":
+  version "0.8.8"
+  resolved "https://registry.npmmirror.com/@xmldom/xmldom/-/xmldom-0.8.8.tgz"
+  integrity sha512-0LNz4EY8B/8xXY86wMrQ4tz6zEHZv9ehFMJPm8u2gq5lQ71cfRKdaKyxfJAx5aUoyzx0qzgURblTisPGgz3d+Q==
+
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"
   resolved "https://registry.npmmirror.com/@xtuc/ieee754/-/ieee754-1.2.0.tgz"
@@ -3483,6 +3488,13 @@ core-util-is@1.0.2:
   version "1.0.2"
   resolved "https://registry.npmmirror.com/core-util-is/-/core-util-is-1.0.2.tgz"
   integrity sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==
+
+cos-js-sdk-v5@^1.4.18:
+  version "1.4.18"
+  resolved "https://registry.npmmirror.com/cos-js-sdk-v5/-/cos-js-sdk-v5-1.4.18.tgz"
+  integrity sha512-vTy8p59qnEoNJH/1chBSU8lSJDEcKV5PeOlAngmPbmHEwoMNJmKmA71nnquGIWHI4KpR4n57yC+RKP6RZkgsBg==
+  dependencies:
+    "@xmldom/xmldom" "^0.8.6"
 
 cosmiconfig@^5.0.0:
   version "5.2.1"
