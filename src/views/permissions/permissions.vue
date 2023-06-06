@@ -82,7 +82,6 @@ export default {
     async loadPermissionList() {
       const res = await getPermissionList()
       this.list = tranListToTreeData(res.data)
-      console.log(res)
     },
     hAdd(type, id) {
       this.isEdit = false

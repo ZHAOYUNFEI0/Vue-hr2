@@ -8,7 +8,7 @@
         </template>
         <template #right>
           <el-button type="warning" size="small" @click="$router.push('/employees/import')">导入excel</el-button>
-          <el-button type="danger" size="small" @click="hExport">导出excel</el-button>
+          <el-button v-allow="'import_employee'" type="danger" size="small" @click="hExport">导出excel</el-button>
           <el-button type="primary" size="small" @click=" showDialog = true ">新增员工</el-button>
         </template>
       </PageTools>

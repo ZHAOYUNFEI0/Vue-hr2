@@ -22,6 +22,19 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
+// 按钮级权限控制-自定义指令
+Vue.directive('allow', {
+  inserted: function(el, binding) {
+    const points = store.state.user.userInfo.roles.points
+    if (points.includes(binding.value)) {
+      console.log(111)
+      el.style.display = 'none'
+    } else {
+      console.log(222)
+    }
+  }
+})
+
 new Vue({
   el: '#app',
   router,

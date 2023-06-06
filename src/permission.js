@@ -23,8 +23,9 @@ router.beforeEach(async(to, from, next) => {
     // 登录成功获取用户信息
     if (!store.state.user.userInfo.id) {
       // 用户可以访问的页面
+
       const menus = await store.dispatch('user/getUserInfo')
-      console.log('id', store.state.user.userInfo.id)
+      console.log(store.state.user.userInfo)
       // console.log(menus)
       const filterRoutes = asyncRoutes.filter(item => {
         // 遍历拿到每个动态路由的name
