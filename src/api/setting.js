@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 /**
- * 公司设置-获取所有角色spi
+ * 公司设置-获取所有角色api
  * @param {*} params 发送 页码，每页条数
  * @returns
  */
@@ -46,6 +46,30 @@ export function addRole(data) {
 export function undateRole(data) {
   return request({
     url: '/sys/role/' + data.id,
+    method: 'put',
+    data
+  })
+}
+
+/**
+ * 公司设置-获取角色详情
+ * @param {*} id
+ * @returns
+ */
+export function getRoleDetail(id) {
+  return request({
+    url: `/sys/role/${id}`
+  })
+}
+
+/**
+ * 公司设置-给角色分配权限
+ * @param {*} data
+ * @returns
+ */
+export function assignPerm(data) {
+  return request({
+    url: '/sys/role/assignPrem',
     method: 'put',
     data
   })

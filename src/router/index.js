@@ -64,22 +64,23 @@ export const constantRoutes = [
       component: () => import('@/views/import'),
       mata: { title: 'Excel 导入', icon: 'people' }
     }]
-  },
+  }
 
   // 匹配不到 跳转到404
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   // 合并动态路由和静态路由
-  routes: [...constantRoutes, ...asyncRoutes]
+  // routes: [...constantRoutes, ...asyncRoutes]
+  routes: [...constantRoutes]
 })
 
 const router = createRouter()
 
-// Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
+// 重置路由
 export function resetRouter() {
   const newRouter = createRouter()
   router.matcher = newRouter.matcher // reset router

@@ -34,7 +34,7 @@
                   <el-button
                     size="mini"
                     type="success"
-                    @click="handleEdit(scope.$index, scope.row)"
+                    @click="handleEdit(scope.row.id)"
                   >分配权限</el-button>
                   <el-button
                     size="mini"
@@ -89,6 +89,13 @@
           </el-col>
         </el-row>
       </el-dialog>
+      <!-- 权限控制 -->
+      <el-dialog
+        title="分配权限(一级为路由页面查看权限-二级为按钮操作权限)"
+        :visible.sync="showDialogAssign"
+      >
+        <assignPermission v-if="showDialogAssign" :id="id" @close="close" />
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -96,9 +103,12 @@
 <script>
 // 获取所有角色api
 import { getRoles, deleteRole, addRole, undateRole } from '@/api/setting'
-
+import assignPermission from './assignPermission.vue'
 export default {
   name: 'Setting',
+  components: {
+    assignPermission
+  },
   data() {
     return {
       tableData: [],
@@ -117,7 +127,9 @@ export default {
       rules: {
         name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }]
       },
-      isEdit: false
+      isEdit: false,
+      showDialogAssign: false,
+      id: ''
     }
   },
 
@@ -224,6 +236,13 @@ export default {
         description: ''
       }
       this.$refs.roleForm.resetFields()
+    },
+    handleEdit(id) {
+      this.showDialogAssign = true
+      this.id = id
+    },
+    close() {
+      this.showDialogAssign = false
     }
 
   }

@@ -35,7 +35,7 @@
           <el-table-column label="操作" width="250">
             <template slot-scope="scope">
               <el-button type="text" @click="$router.push(`/employees/detail?id=${scope.row.id}`)">查看</el-button>
-              <el-button type="text">分配角色</el-button>
+              <el-button type="text" @click="hAssignRole(scope.row.id)">分配角色</el-button>
               <el-button type="text" @click=" Hdel(scope.row.id) ">删除</el-button>
             </template>
           </el-table-column>
@@ -53,7 +53,11 @@
       </el-card>
       <!-- 添加弹窗 -->
       <el-dialog title="添加员工" :visible.sync=" showDialog ">
-        <addorEdit v-if=" showDialog " @success=" hSuccess " @close=" close " />
+        <addorEdit v-if="showDialog " @success=" hSuccess " @close=" close " />
+      </el-dialog>
+
+      <el-dialog title="分配角色" :visible.sync="showDialog2 ">
+        <assignRole v-if="showDialog2" :employee-id="curEmployeId" @close="showDialog2 = false" />
       </el-dialog>
     </div>
   </div>
@@ -64,11 +68,13 @@ import PageTools from '@/components/PageTools'
 import { getEmployeeList, delEmployee } from '@/api/employees'
 import EmployeeEnum from '@/constant/employees'
 import addorEdit from './empDialog.vue'
+import assignRole from './assignRole.vue'
 export default {
   name: 'Employess',
   components: {
     PageTools,
-    addorEdit
+    addorEdit,
+    assignRole
   },
   data() {
     return {
@@ -77,7 +83,10 @@ export default {
       size: 5,
       total: 0,
       currentPage4: 1,
-      showDialog: false
+      showDialog: false,
+      showDialog2: false,
+
+      curEmployeId: ''
     }
   },
 
@@ -205,6 +214,12 @@ export default {
       })
 
       return { header, data }
+    },
+
+    // 分配角色
+    hAssignRole(id) {
+      this.showDialog2 = true
+      this.curEmployeId = id
     }
   }
 }
